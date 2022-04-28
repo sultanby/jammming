@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import SearchResult from '../SearchResult/SearchResult';
 import Playlist from '../Playlist/Playlist';
+import SearchBar from '../SearchBar/SearchBar';
 
 class App extends React.Component {
   constructor(props){
@@ -15,6 +16,7 @@ class App extends React.Component {
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
+    this.search = this.search.bind(this);
   }
 
   addTrack(track) {
@@ -42,12 +44,16 @@ class App extends React.Component {
     this.playlistTracks.forEach(track => trackURIs.push(track.uri))
   }
 
+  search(term){
+    console.log(term);
+  }
+
   render() { 
     return (
       <div>
       <h1>Ja<span className="highlight">mmm</span>ing</h1>
       <div className="App">
-      {/* Add a SearchBar component */}
+      <SearchBar onSearch={this.search} />
         <div className="App-playlist">
           <SearchResult 
             searchResults={this.state.searchResults}
