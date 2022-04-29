@@ -3,12 +3,13 @@ import './App.css';
 import SearchResult from '../SearchResult/SearchResult';
 import Playlist from '../Playlist/Playlist';
 import SearchBar from '../SearchBar/SearchBar';
+import Spotify from '../../util/Spotify';
 
 class App extends React.Component {
   constructor(props){
     super(props);
     this.state = { 
-      searchResults : [],
+      searchResults: [],
       playlistName: 'classics',
       playlistTracks: []
     };
@@ -45,10 +46,13 @@ class App extends React.Component {
   }
 
   search(term){
-    console.log(term);
+    Spotify.search(term).then(result => {
+      this.setState({searchResults: result});
+    })
   }
 
   render() { 
+    console.log("state of app" + this.playlistTracks)
     return (
       <div>
       <h1>Ja<span className="highlight">mmm</span>ing</h1>
