@@ -10,7 +10,7 @@ class App extends React.Component {
     super(props);
     this.state = { 
       searchResults: [],
-      playlistName: 'classics',
+      playlistName: 'playlist name',
       playlistTracks: []
     };
     this.addTrack = this.addTrack.bind(this);
@@ -32,7 +32,7 @@ class App extends React.Component {
 
   removeTrack(track){
     let tracks = this.state.playlistTracks;
-    tracks.filter(unwantedTrack => unwantedTrack.id !== track.id)
+    tracks = tracks.filter(unwantedTrack => unwantedTrack.id !== track.id)
     this.setState({playlistTracks: tracks})
   }
 
@@ -42,7 +42,9 @@ class App extends React.Component {
 
   savePlaylist(){
     let trackURIs = [];
-    this.playlistTracks.forEach(track => trackURIs.push(track.uri))
+    this.state.playlistTracks.forEach(track => trackURIs.push(track.uri));
+    console.log(trackURIs);
+    Spotify.savePlaylist(this.state.playlistName, trackURIs);
   }
 
   search(term){
@@ -52,7 +54,7 @@ class App extends React.Component {
   }
 
   render() { 
-    console.log("state of app" + this.playlistTracks)
+    console.log("state of app" + this.state.playlistTracks + this.state.playlistName)
     return (
       <div>
       <h1>Ja<span className="highlight">mmm</span>ing</h1>
