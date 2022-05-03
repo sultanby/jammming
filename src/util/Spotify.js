@@ -1,5 +1,5 @@
 const CLIENT_ID='cbddd3acba224a4ab545becd79fce2b0';
-const REDIRECT_URI='http://localhost:3000/'
+const REDIRECT_URI='http://jammming-sultanby.surge.sh';
 
 let accessToken;
 

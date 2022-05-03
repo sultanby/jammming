@@ -43,7 +43,6 @@ class App extends React.Component {
   savePlaylist(){
     let trackURIs = [];
     this.state.playlistTracks.forEach(track => trackURIs.push(track.uri));
-    console.log(trackURIs);
     Spotify.savePlaylist(this.state.playlistName, trackURIs);
   }
 
@@ -53,8 +52,7 @@ class App extends React.Component {
     })
   }
 
-  render() { 
-    console.log("state of app" + this.state.playlistTracks + this.state.playlistName)
+  render() {
     return (
       <div>
       <h1>Ja<span className="highlight">mmm</span>ing</h1>
