@@ -1,7 +1,9 @@
 const CLIENT_ID='cbddd3acba224a4ab545becd79fce2b0';
-const REDIRECT_URI='http://jammming-sultanby.surge.sh';
+const REDIRECT_URI='http://localhost:3000/'
+//const REDIRECT_URI='http://jammming-sultanby.surge.sh';
 
 let accessToken;
+let userID;
 
 
 let Spotify = {
@@ -23,6 +25,20 @@ let Spotify = {
         } else {
             window.location = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&scope=playlist-modify-public&redirect_uri=${REDIRECT_URI}`;
         }
+    },
+
+    async getCurrentUserId(){
+        if (userID) {
+            return userID;
+        }
+        let accessToken = this.getAccessToken();
+        let headers = {Authorization: `Bearer ${accessToken}`};
+        let idFetch = await fetch('https://api.spotify.com/v1/me', {
+                            headers: headers
+                        });
+        let response = await idFetch.json();
+        userID = response.id;
+        return userID;
     },
 
     search(term) {
@@ -52,21 +68,15 @@ let Spotify = {
         }
         let accessToken = this.getAccessToken();
         let headers = {Authorization: `Bearer ${accessToken}`};
-        let userID;
+        let userID = await this.getCurrentUserId();
         let playlistID;
-
-        let idFetch = await fetch('https://api.spotify.com/v1/me', {
-                            headers: headers
-                        });
-        let response = await idFetch.json();
-        userID = response.id;
 
         let playlistIdFetch = await fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
                                     headers: headers,
                                     method: 'POST',
                                     body: JSON.stringify({name: playlistName})
                                 })
-        response = await playlistIdFetch.json();
+        let response = await playlistIdFetch.json();
         playlistID = response.id;
 
         return fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`, {
