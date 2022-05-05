@@ -31,7 +31,9 @@ let Spotify = {
         if (userID) {
             return userID;
         }
-        let accessToken = this.getAccessToken();
+        if(!accessToken){
+            this.getAccessToken();
+        }
         let headers = {Authorization: `Bearer ${accessToken}`};
         let idFetch = await fetch('https://api.spotify.com/v1/me', {
                             headers: headers
@@ -41,8 +43,31 @@ let Spotify = {
         return userID;
     },
 
+    async getUserPlaylists() {
+        if (!userID) {
+            await this.getCurrentUserId();
+        }
+        if(!accessToken){
+            this.getAccessToken();
+        }
+        let headers = {Authorization: `Bearer ${accessToken}`};
+        let playlistListFetch = await fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
+                                        headers: headers
+                                    })
+        let response = await playlistListFetch.json();
+        let data = response.items.map(item => {
+            return {
+                name: item.name,
+                playlistId: item.id
+            }
+        });
+        return data;
+    },
+
+
     search(term) {
         accessToken = Spotify.getAccessToken();
+        this.getUserPlaylists();
         return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
             headers: {Authorization:`Bearer ${accessToken}`}
         })
@@ -62,13 +87,18 @@ let Spotify = {
         });
     },
 
+    
     async savePlaylist(playlistName, trackURIs) {
         if(!playlistName || !trackURIs) {
             return;
         }
-        let accessToken = this.getAccessToken();
+        if(!accessToken){
+            this.getAccessToken();
+        }
+        if(!userID){
+            await this.getCurrentUserId();
+        }
         let headers = {Authorization: `Bearer ${accessToken}`};
-        let userID = await this.getCurrentUserId();
         let playlistID;
 
         let playlistIdFetch = await fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
