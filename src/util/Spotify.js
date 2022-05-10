@@ -52,8 +52,8 @@ let Spotify = {
         }
         let headers = {Authorization: `Bearer ${accessToken}`};
         let playlistListFetch = await fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
-                                        headers: headers
-                                    })
+            headers: headers
+        });
         let response = await playlistListFetch.json();
         let data = response.items.map(item => {
             return {
@@ -64,10 +64,31 @@ let Spotify = {
         return data;
     },
 
+    async getPlaylist(playlistId){
+        let headers = {Authorization: `Bearer ${accessToken}`};
+        let playlistFetch = await fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistId}/tracks`, {
+            headers: headers
+        });
+        let response = await playlistFetch.json();
+        let playlistTracksArray = response.items.map(items => {return items.track});
+        let playlistTracks = playlistTracksArray.map(track => {
+            return {
+                id: track.id,
+                name: track.name,
+                artist: track.artists[0].name,
+                album: track.album.name,
+                uri: track.uri
+            }
+        })
+
+        return playlistTracks;
+    },
+
 
     search(term) {
         accessToken = Spotify.getAccessToken();
-        this.getUserPlaylists();
+        //this.getUserPlaylists();
+        this.getPlaylist("0GYF4VvEPcuHs9gEKzR59v");
         return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
             headers: {Authorization:`Bearer ${accessToken}`}
         })
