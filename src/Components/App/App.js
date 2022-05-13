@@ -54,9 +54,8 @@ class App extends React.Component {
       Spotify.savePlaylist(this.state.playlistName, trackURIs);
     } 
     else {
-      Spotify.updatePlaylistItems(trackURIs, this.state.playlistId)
+      Spotify.updatePlaylistItems(trackURIs, this.state.playlistId, this.state.playlistName)
     }
-    
   }
 
   search(term){

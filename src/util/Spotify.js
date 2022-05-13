@@ -138,7 +138,7 @@ let Spotify = {
             })
     },
 
-    async updatePlaylistItems(trackURIs, playlistID) {
+    async updatePlaylistItems(trackURIs, playlistID, playlistName) {
         if(!trackURIs){
             return;
         }
@@ -149,6 +149,13 @@ let Spotify = {
             await this.getCurrentUserId();
         }
         let headers = {Authorization: `Bearer ${accessToken}`};
+
+        await fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}`, {
+            headers: headers,
+            method: 'PUT',
+            body: JSON.stringify({name: playlistName})
+        })
+
         return await fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`, {
             headers: headers,
             method: 'PUT',
