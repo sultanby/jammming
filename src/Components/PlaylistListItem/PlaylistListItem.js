@@ -1,4 +1,5 @@
 import React from 'react';
+import './PlaylistListItem.css'
 
 class PlaylistListItem extends React.Component {
     constructor(props){
@@ -15,9 +16,9 @@ class PlaylistListItem extends React.Component {
         return (
             <div className='playlistListItem'>
                 <div className='playlist-information'>
-                    <button onClick={this.choosePlaylist}>
+                    <h3 onClick={this.choosePlaylist}>
                         {this.props.playlist.name}
-                    </button>
+                    </h3>
                 </div>
             </div>
         );

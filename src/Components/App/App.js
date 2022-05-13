@@ -82,7 +82,7 @@ class App extends React.Component {
       <h1>Ja<span className="highlight">mmm</span>ing</h1>
       <div className="App">
       <PlaylistSearch onClick={this.getUserPlaylists}/>
-      <h3>or create new playlist by adding new tracks</h3>
+      <h4>or create new playlist by adding new tracks:</h4>
       <SearchBar onSearch={this.search} />
         <div className="App-playlist">
           <SearchResult 
