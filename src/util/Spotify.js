@@ -61,6 +61,7 @@ let Spotify = {
                 playlistId: item.id
             }
         });
+        console.log(data);
         return data;
     },
 
@@ -80,7 +81,7 @@ let Spotify = {
                 uri: track.uri
             }
         })
-
+        //console.log(playlistTracks);
         return playlistTracks;
     },
 
@@ -88,10 +89,10 @@ let Spotify = {
     search(term) {
         accessToken = Spotify.getAccessToken();
         //this.getUserPlaylists();
-        this.getPlaylist("0GYF4VvEPcuHs9gEKzR59v");
+        //this.getPlaylist("0GYF4VvEPcuHs9gEKzR59v");
         return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
             headers: {Authorization:`Bearer ${accessToken}`}
-        })
+        })  
         .then(response => {
             return response.json()
         })
@@ -122,12 +123,12 @@ let Spotify = {
         let headers = {Authorization: `Bearer ${accessToken}`};
         let playlistID;
 
-        let playlistIdFetch = await fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
+        let playlistIds = await fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
                                     headers: headers,
                                     method: 'POST',
                                     body: JSON.stringify({name: playlistName})
                                 })
-        let response = await playlistIdFetch.json();
+        let response = await playlistIds.json();
         playlistID = response.id;
 
         return fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`, {
@@ -135,6 +136,24 @@ let Spotify = {
                 method: 'POST',
                 body: JSON.stringify({uris: trackURIs})
             })
+    },
+
+    async updatePlaylistItems(trackURIs, playlistID) {
+        if(!trackURIs){
+            return;
+        }
+        if(!accessToken){
+            this.getAccessToken();
+        }
+        if(!userID){
+            await this.getCurrentUserId();
+        }
+        let headers = {Authorization: `Bearer ${accessToken}`};
+        return await fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`, {
+            headers: headers,
+            method: 'PUT',
+            body: JSON.stringify({uris: trackURIs})
+        })
     }
 }
 
