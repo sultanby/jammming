@@ -91,6 +91,8 @@ class App extends React.Component {
       playlistTracks: [],
       searchResults: [],
       playlistList: [],
+      playlistId: '',
+      isExistingPlaylist: false
     });
   }
 
