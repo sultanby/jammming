@@ -25,6 +25,7 @@ class App extends React.Component {
     this.search = this.search.bind(this);
     this.getUserPlaylists = this.getUserPlaylists.bind(this);
     this.getUserPlaylistTracks = this.getUserPlaylistTracks.bind(this);
+    this.clearSearch = this.clearSearch.bind(this);
   }
 
   addTrack(track) {
@@ -76,13 +77,17 @@ class App extends React.Component {
     })
   }
 
+  clearSearch(){
+    this.setState({playlistName: 'playlist name', playlistTracks: [], searchResults: [], playlistList: []})
+  }
+
   render() {
     return (
       <div>
       <h1>Ja<span className="highlight">mmm</span>ing</h1>
       <div className="App">
       <PlaylistSearch onClick={this.getUserPlaylists}/>
-      <h4>or create new playlist by adding new tracks:</h4>
+      <h4>or create new playlist by adding new tracks:</h4>  
       <SearchBar onSearch={this.search} />
         <div className="App-playlist">
           <SearchResult 
@@ -91,6 +96,7 @@ class App extends React.Component {
             playlistList={this.state.playlistList}
             isPlaylist={this.state.isPlaylist}
             onChoose={this.getUserPlaylistTracks}
+            clearSearch={this.clearSearch}
           />
           <Playlist 
             playlistName={this.state.playlistName} 

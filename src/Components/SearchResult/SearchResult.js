@@ -4,6 +4,14 @@ import TrackList from '../TrackList/TrackList';
 import PlaylistList from '../PlaylistList/PlaylistList';
 
 class SearchResult extends React.Component {
+    constructor(props){
+        super(props);
+        this.clearSearch = this.clearSearch.bind(this);
+    }
+
+    clearSearch(){
+        this.props.clearSearch()
+    }
     render() { 
         return (
             <div className="SearchResults">
@@ -20,6 +28,7 @@ class SearchResult extends React.Component {
                         isRemoval={false}
                     />
                 }
+                <button onClick={this.clearSearch} className="clear-search">CLEAR SEARCH</button>
             </div>
         );
     }
